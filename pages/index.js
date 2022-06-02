@@ -1,13 +1,21 @@
-import {getFeaturedEvents} from '../dummy-data'
+import {getFeaturedEvents} from '../helpers/api-util'
 import EventList from '../src/components/EventList'
 
-const HomePage = () => {
-  const FeaturedEvents = getFeaturedEvents();
+const HomePage = (props) => {
   return (
     <div>
-      <EventList events={FeaturedEvents} />
+      <EventList events={props.events} />
     </div>
   );
 };
+export async function getStaticProps(){
+  const FeaturedEvents = await getFeaturedEvents();
+  return {
+    props : {
+      events : FeaturedEvents
+    },
+    revalidate : 1800
+  }
+}
 
 export default HomePage;
