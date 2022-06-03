@@ -22,7 +22,7 @@ function Comments(props) {
       <button onClick={toggleCommentsHandler}>
         {showComments ? 'Hide' : 'Show'} Comments
       </button>
-      {showComments && <NewComment onAddComment={addCommentHandler} />}
+      {showComments && <NewComment eventId={eventId} onAddComment={addCommentHandler} />}
       {showComments && <CommentList />}
     </section>
   );
