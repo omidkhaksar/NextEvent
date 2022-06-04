@@ -20,10 +20,12 @@ function handler(req, res) {
     }
     if(req.method==='GET'){
         const dummyList = [
-            {id:'c1',userName:'John',userComment:'This post is awesome'},
-            {id:'c2',userName:'max',userComment:'This post is awefull'},
+            {id:'c1',event:'e2',userName:'John',userComment:'This post is awesome'},
+            {id:'c2',event:'e1',userName:'max',userComment:'This post is awefull'},
+            {id:'c3',event:'e3',userName:'omid',userComment:'This post is nothing'},
         ];
-        res.status(201).json({comments:dummyList}).send({message:'Sending Comment successful.'});
+        const data_filter = dummyList.filter( element => element.event === eventId)
+        res.status(201).json({comments:data_filter}).send({message:'Sending Comment successful.'});
 
     }
 

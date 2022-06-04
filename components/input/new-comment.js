@@ -3,8 +3,6 @@ import classes from './new-comment.module.css'
 
 function NewComment(props) {
   const [isInvalid, setIsInvalid] = useState(false);
-  const {eventId} = props;
-
   const emailInputRef = useRef();
   const commentInputRef = useRef();
   const nameInputRef = useRef();
@@ -15,24 +13,7 @@ function NewComment(props) {
     const enteredEmail = emailInputRef.current.value;
     const enteredName = nameInputRef.current.value;
     const enteredComment = commentInputRef.current.value;
-    const reqBody = {
-      userEmail : enteredEmail,
-      userName : enteredName,
-      userComment : enteredComment
-    }
-    // fetch user input (state or refs)
-    // optional: validate input
-    // send valid data to API
-    fetch(`/api/comment/[${eventId}]`,{
-      method: 'POST',
-      body: JSON.stringify(reqBody),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }).then(response => response.json()).then((data) => console.log(data));
-  
-    
+ 
 
     if (
       !enteredEmail ||
@@ -49,6 +30,7 @@ function NewComment(props) {
 
     props.onAddComment({
       email: enteredEmail,
+      name:enteredName,
       text: enteredComment,
     });
   }
