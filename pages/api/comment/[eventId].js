@@ -1,5 +1,9 @@
-function handler(req, res) {
+import { MongoClient } from "mongodb";
+async function handler(req, res) {
     const eventId = req.query.eventId;
+    const client = await MongoClient.connect(
+        "mongodb+srv://Omid:Omid0017553806*@nextevent.ko9e6vx.mongodb.net/events?retryWrites=true&w=majority"
+      );
     if (req.method==='POST'){
         const {userEmail,userName,userComment} = req.body;
 
@@ -9,25 +13,24 @@ function handler(req, res) {
         }
     
         const newComment={
-            id: new Date().toISOString(),
             eventId,userEmail,userName,userComment
         }
-        console.log(newComment)
 
+        const db = client.db();
+        await db.collection("comments").insertOne(newComment);
+        
         res.status(201).send({message:'Sending Comment successful.'});
 
          
     }
     if(req.method==='GET'){
-        const dummyList = [
-            {id:'c1',event:'e2',userName:'John',userComment:'This post is awesome'},
-            {id:'c2',event:'e1',userName:'max',userComment:'This post is awefull'},
-            {id:'c3',event:'e3',userName:'omid',userComment:'This post is nothing'},
-        ];
-        const data_filter = dummyList.filter( element => element.event === eventId)
-        res.status(201).json({comments:data_filter}).send({message:'Sending Comment successful.'});
+        const db = client.db();
+        const dummyList = await db.collection("comments").find().sort({_id:-1}).toArray()
+        const data_filter = dummyList.filter( element => element.eventId === eventId)
+        res.status(201).json({comments:data_filter});
 
     }
+    client.close();
 
 }
 export default handler;
